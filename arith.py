@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # arith.py
-# author: Gabriel Lewertowski, Stéphane Horte
+# author: Gabriel Lewertowski, Stephane Horte
 # date: 07/02/14
 #
 # A range of number-theoretic algorithms.
