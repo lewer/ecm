@@ -54,7 +54,7 @@ def Pollard_rho(N,f = lambda x, m : (x*x +1) % m):
 
 def FactorPollard(N, k=3):
     try:
-        d = Pollard_rho(N)
+        d = Pollard_rho(N) # utilise methode de Monte Carlo
     except:
         return [N]
 
