@@ -93,6 +93,16 @@ def primes_up_to(bound):
         
     return primes
 
+def ecrirenombrepremier (n): 
+    
+    nbrpremiers = open('nbrpremiers.txt','w')    
+    eratho = (n+1)*range(1)
+    for i in range(2,n+1) :
+        if eratho[i] == 0 : 
+            if(i==2):nbrpremiers.write("2") #disjonction de cas pour le saut de ligne
+            if(i!=2):nbrpremiers.write("\n%i" %i)             
+            for j in range(n/i) :
+                eratho[(j+1)*i]=1
 
 def trial_division(N,bound):
     """
@@ -188,6 +198,8 @@ def is_probable_prime(N,nbases=20):
     # your code goes here...
 
     pass # remove this line when done
+
+
 
 def random_probable_prime(bits):
     """
