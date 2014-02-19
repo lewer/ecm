@@ -8,8 +8,22 @@
 
 import random
 import fractions
+import os.path
 
 def AMR(n, k = 3) :
+    """
+    Test Miller-Rabin pour déterminer si un entier est premier
+    
+    :Parameters:
+        -`n` : l'entier dont on veut savoir s'il est premier
+        -`k` : le nombre de fois qu'on lance le test
+        
+    :return:
+        False : n est un nombre composé
+        True : n est probablement un nombre premier (mais n peut être composé)
+    
+    """
+    
     if n % 2 == 0 :
         return False
     
@@ -42,6 +56,7 @@ def Pollard_rho(N,f = lambda x, m : (x*x +1) % m):
     (presumed composite) using the Pollard rho algorithm.
     The second argument, f, is a pseudo-random function modulo N.
     """
+    
     x, y, g = 1, 1 ,1
     while (g == 1):
         x, y = f(x, N), f(f(y, N), N)
@@ -54,9 +69,21 @@ def Pollard_rho(N,f = lambda x, m : (x*x +1) % m):
         return g
 
 def FactorPollard(N, k=3):
+    """
+    Factorise un entier avec la méthode Pollard_rho
+    
+    :Parameters:
+        -`N`: L'entier à factoriser
+        -`k`: le nombre de fois qu'on lance AMR pour déterminer si un entier est premier
+        
+    :return:
+        La liste des facteurs de N
+        
+    """
+    
     try:
-        d = Pollard_rho(N) # utilise methode de Monte Carlo
-    except:
+        d = Pollard_rho(N) 
+    except: #Pollard_rho lance une exception s'il n'a pas pu calculer de facteur de N
         return [N]
 
     facteurs = []
@@ -72,70 +99,42 @@ def FactorPollard(N, k=3):
         
     return facteurs
 
-def primes_up_to(bound):
+def compute_prime_numbers_up_to (n): 
     """
-    Lists the primes p less than or equal to the bound.
+    Écrit dans le fichier nbrpremiers.txt les n premiers nombres premiers
     
-    >>> primes_up_to(50) 
-    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
     """
     
-    marked = set()
-    primes = []
-    lowest_unmarked = 2
+    with open('nbrpremiers.txt','w') as nbrpremiers:
+        eratho = (n+1)*range(1)
+        for i in range(2,n+1) :
+            if eratho[i] == 0 : 
+                if(i==2):nbrpremiers.write("2") #disjonction de cas pour le saut de ligne
+                if(i!=2):nbrpremiers.write("\n%i" %i)             
+                for j in range(n/i) :
+                    eratho[(j+1)*i]=1
 
-    while bound not in marked:
-        primes.append(lowest_unmarked)
-        for k in xrange(1, bound/lowest_unmarked):
-            marked.add(k*lowest_unmarked)
-        print marked
-        while lowest_unmarked in marked:
-            lowest_unmarked += 1
+def diviseurs_triviaux (n) :
+    """
+    Renvoie la liste des petits diviseurs de n
+    
+    """
+    
+    if not os.path.isfile('nbrpremiers.txt'):
+        #Si le fichier n'existe pas, on le créé
+        compute_prime_numbers_up_to(10**6)
         
-    return primes
-
-def ecrirenombrepremier (n): 
-    
-    nbrpremiers = open('nbrpremiers.txt','w')    
-    eratho = (n+1)*range(1)
-    for i in range(2,n+1) :
-        if eratho[i] == 0 : 
-            if(i==2):nbrpremiers.write("2") #disjonction de cas pour le saut de ligne
-            if(i!=2):nbrpremiers.write("\n%i" %i)             
-            for j in range(n/i) :
-                eratho[(j+1)*i]=1
-
-def diviseurstriviaux (n) :
-   
     nbrpremiers = open('nbrpremiers.txt','r')
     lignes = nbrpremiers.readlines()
     reponse=[]
     for ligne in lignes :
         i = int(ligne)
-        if n%i ==0 :
+        if n%i == 0 :
             g = n
             while g %i ==0:
                 reponse = reponse +[i]
                 g = g/i
-    return set(reponse)
-
-def trial_division(N,bound):
-    """
-    Given an integer N, returns a list S of tuples in the form (p,e),
-    where each p is a prime less than bound and e is an exponent such that
-    p**e divides N.  Also returns the (unfactored) cofactor M
-    such that N is the product of M with the prime powers specified by S.
-
-    >>> N = 29145271819831067830349386007355751792690423602074265137925000
-    >>> trial_division(N,100)
-    ([(2, 3), (3, 6), (5, 5), (17, 3), (31, 2), (41, 6)], 71306198031317215975086685276791653621L)
-    >>> trial_division(1,100)
-    ([], 1)
-    """
-    # your code goes here...
-
-    pass  # remove this line when done
-
+    return reponse
 
 def XGCD(a,b):
     """
@@ -162,71 +161,6 @@ def XGCD(a,b):
     
     return (x, u1, v1)
 
-def CRT(S):
-    """
-    Given a list S of pairs (r,m), returns an integer n such that
-    n mod m = r for each (r,m) in S.  If no such n exists, then this
-    function returns -1.  The moduli m must all be positive.
-
-    >>> CRT([(1,7),(2,11),(3,13),(4,15),(5,17)])
-    18229
-    >>> CRT([(1,3),(2,6)]) 
-    -1
-    """
-    # your code goes here...
-
-    pass # remove this line when done
-
-
-def Jacobi_symbol(a,b):
-    """
-    Computes the Jacobi Symbol (a/b) of integers a and b,
-    where b is positive and odd.
-
-    >>> Jacobi_symbol(129837123,98732498234134187123)
-    -1
-    >>> Jacobi_symbol(1231928323,98732498234134187123)
-    1
-    """
-    if (b < 0) or ((b % 2) == 0):
-        raise RuntimeError("Second argument of Jacobi_symbol must be positive and odd")
-
-    # your code goes here...
-
-    pass # remove this line when done
-
-
-
-def is_probable_prime(N,nbases=20):
-    """
-    True if N is a strong pseudoprime for nbases random bases b < N.
-    Uses the Miller--Rabin primality test.
-
-    >>> is_probable_prime(13)
-    True
-    >>> is_probable_prime(1293871928371928739182731111)
-    False
-    >>> is_probable_prime(1267650600228229401496703205653)
-    True
-    """
-    # Use the Miller-Rabin primality test
-    # your code goes here...
-
-    pass # remove this line when done
-
-
-
-def random_probable_prime(bits):
-    """
-    Returns a probable prime number with the given number of bits.
-    """
-    # your code goes here...
-
-    pass # remove this line when done
-
-
-# If this module is run as a script, then the following code will
-# check the examples given in the docstrings for each function.
 if __name__ == "__main__":
     print "Running doctest..."
     import doctest
