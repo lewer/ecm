@@ -104,6 +104,20 @@ def ecrirenombrepremier (n):
             for j in range(n/i) :
                 eratho[(j+1)*i]=1
 
+def diviseurstriviaux (n) :
+   
+    nbrpremiers = open('nbrpremiers.txt','r')
+    lignes = nbrpremiers.readlines()
+    reponse=[]
+    for ligne in lignes :
+        i = int(ligne)
+        if n%i ==0 :
+            g = n
+            while g %i ==0:
+                reponse = reponse +[i]
+                g = g/i
+    return set(reponse)
+
 def trial_division(N,bound):
     """
     Given an integer N, returns a list S of tuples in the form (p,e),
