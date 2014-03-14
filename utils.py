@@ -53,14 +53,15 @@ def compute_prime_numbers_up_to (n):
     
     """
     
-    with open('nbrpremiers.txt','w') as nbrpremiers:
-        eratho = (n+1)*range(1)
-        for i in range(2,n+1) :
-            if eratho[i] == 0 : 
-                if(i==2):nbrpremiers.write("2") #disjonction de cas pour le saut de ligne
-                if(i!=2):nbrpremiers.write("\n%i" %i)             
-                for j in range(n/i) :
-                    eratho[(j+1)*i]=1
+    result = []
+    eratho = (n+1)*range(1)
+    for i in range(2,n+1) :
+        if eratho[i] == 0 : 
+            result.append(i)         
+            for j in range(n/i) :
+                eratho[(j+1)*i]=1
+
+    return result
 
 def diviseurs_triviaux (n) :
     """
@@ -108,9 +109,4 @@ def XGCD(a,b):
         v2, v1 = v1 - q*v2, v2
     
     return (x, u1, v1)
-
-if __name__ == "__main__":
-    print "Running doctest..."
-    import doctest
-    doctest.testmod( )
 

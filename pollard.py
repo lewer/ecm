@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 # arith.py
 # author: Gabriel Lewertowski, Stephane Horte
-# date: 07/02/14
-#
-# A range of number-theoretic algorithms.
-# Compatible with the doctest module.
-
+# -*- coding: utf-8 -*-
 import fractions
 from utils import *
 
