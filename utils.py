@@ -63,27 +63,21 @@ def compute_prime_numbers_up_to (n):
 
     return result
 
-def diviseurs_triviaux (n) :
+def diviseurs_triviaux(n):
     """
     Renvoie la liste des petits diviseurs de n
     
     """
-    
-    if not os.path.isfile('nbrpremiers.txt'):
-        #Si le fichier n'existe pas, on le créé
-        compute_prime_numbers_up_to(10**6)
-        
-    nbrpremiers = open('nbrpremiers.txt','r')
-    lignes = nbrpremiers.readlines()
-    reponse=[]
-    for ligne in lignes :
-        i = int(ligne)
-        if n%i == 0 :
+
+    nbrpremiers = compute_prime_numbers_up_to(10**6)
+    result = []
+    for p in nbrpremiers:
+        if n % p == 0:
             g = n
-            while g %i ==0:
-                reponse = reponse +[i]
-                g = g/i
-    return reponse
+            while g % p == 0:
+                result.append(p)
+                g = g/p
+    return result
 
 def XGCD(a,b):
     """
