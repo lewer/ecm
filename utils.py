@@ -104,3 +104,16 @@ def XGCD(a,b):
     
     return (x, u1, v1)
 
+def valuation(b, p):
+    """"
+    Renvoie p^k tel que p^k <= b < p^(k+1)
+
+    """
+
+    assert(p > 0)
+    assert(b > 0)
+    result = p
+    while (result*p < b):
+        result *= p
+
+    return result
