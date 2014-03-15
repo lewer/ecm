@@ -4,11 +4,15 @@ import math
 import fractions
 
 
-def un_facteur(n, b1=10**6, phase2=True, b2=10**8):
+def un_facteur(n, b1=10**6, phase2=True, b2=10**8, k=3):
     """
     Renvoie un facteur de n avec la méthode p-1
 
     """
+
+    if utils.AMR(n, k):
+        # n probablement premier
+        return n
 
     b = 2
     primes_up_to_bound = utils.big_eratho(b1)
@@ -61,10 +65,17 @@ def factorise(N, k=3, b1=10**6):
 
     """
 
+    # On factorise les entiers <= avec la méthode naïve
+    if N <= 1000:
+        return utils.naive_factoring(N)
+
     try:
         d = un_facteur(N, b1)
     except:
-        return [N]
+        raise Exception("Impossible de factoriser l'entier")
+
+    if d == N:
+        return [d]
 
     facteurs = []
     if utils.AMR(d, k):

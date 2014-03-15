@@ -200,3 +200,20 @@ def decimales_pi(n, offset=0):
     with open('pi.txt') as f:
         f.seek(offset)
         return int(f.read(n))
+
+
+def naive_factoring(n):
+    """
+    Factorise n en le divisant par les nombres premiers inférieurs à sqrt(n)
+
+    """
+
+    result = []
+    for p in eratho(n/2):
+        if n % p == 0:
+            q = p
+            while (n % q == 0):
+                result.append(p)
+                q *= p
+
+    return result
