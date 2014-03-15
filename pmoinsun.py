@@ -31,7 +31,6 @@ def un_facteur(n, b1=10**6, phase2=True, b2=10**8):
         s1 = primes.next()
         t = pow(b, s1, n)  # ta va itérativement contenir b^s pour tous les s premiers, b1 <= s <= b2
         for i, s2 in enumerate(primes):
-            print "iteration " + str(i)
             pgcd = fractions.gcd(t, n)
             if pgcd > 1:
                 return pgcd
