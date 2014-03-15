@@ -4,7 +4,7 @@ import math
 import fractions
 
 
-def un_facteur(n, b1=10**6, phase2=True, b2=10**8, k=3):
+def un_facteur(n, b1=10**6, phase2=True, b2=5*10**8, k=3):
     """
     Renvoie un facteur de n avec la méthode p-1
 
@@ -15,7 +15,7 @@ def un_facteur(n, b1=10**6, phase2=True, b2=10**8, k=3):
         return n
 
     b = 2
-    primes_up_to_bound = utils.big_eratho(b1)
+    primes_up_to_bound = utils.primes_from_file(1, b1)
     for p in primes_up_to_bound:
         q = utils.valuation(b1, p)
         b = pow(b, q, n)
@@ -28,14 +28,14 @@ def un_facteur(n, b1=10**6, phase2=True, b2=10**8, k=3):
             raise Exception('Aucun facteur calculé : il faut augmenter B1 ou faire la phase 2')
 
         # Phase 2, continuation standard
-        # On tabule b^i pour i <= log(b2)^2
-        c = [pow(b, i, n) for i in range(1, int(math.log(b2)**2) + 1)]
+        # On tabule b^i mod n pour i <= log(b2)^2
+        c = [pow(b, i, n) for i in range(int(math.log(b2)**2) + 1)]
 
-        primes = utils.big_segmented_eratho(b1, b2)  # nombres premiers entre b1 et b2
+        primes = utils.primes_from_file(b1, b2)  # nombres premiers entre b1 et b2
         s1 = primes.next()
         t = pow(b, s1, n)  # ta va itérativement contenir b^s pour tous les s premiers, b1 <= s <= b2
-        for i, s2 in enumerate(primes):
-            pgcd = fractions.gcd(t, n)
+        for s2 in primes:
+            pgcd = fractions.gcd(t - 1, n)
             if pgcd > 1:
                 return pgcd
 

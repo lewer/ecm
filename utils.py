@@ -217,3 +217,26 @@ def naive_factoring(n):
                 q *= p
 
     return result
+
+
+def write_primes_up_to(n):
+    """
+    Enregistre dans le fichiers nbrpremiers.txt les nombres premiers
+    inférieurs à n
+
+    """
+
+    with open('nbrpremiers.txt', 'w') as f:
+        for p in big_eratho(n):
+            f.write(str(p) + '\n')
+
+
+def primes_from_file(l, r):
+    with open('nbrpremiers.txt', 'r') as f:
+        p = int(f.readline())
+        while p < l:
+            p = int(f.readline())
+
+        while p <= r:
+            yield p
+            p = int(f.readline())
