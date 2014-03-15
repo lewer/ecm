@@ -189,3 +189,14 @@ def valuation(b, p):
         result *= p
 
     return result
+
+
+def decimales_pi(n, offset=0):
+    """
+    Renvoie n décimales de pi en partant de la offset-ième
+
+    """
+
+    with open('pi.txt') as f:
+        f.seek(offset)
+        return int(f.read(n))
