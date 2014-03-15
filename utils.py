@@ -4,26 +4,30 @@
 
 """
 
-import os.path
 import random
+import math
 
-def AMR(n, k = 3) :
+
+def AMR(n, k=3):
     """
     Test Miller-Rabin pour déterminer si un entier est premier
-    
+
     :Parameters:
         -`n` : l'entier dont on veut savoir s'il est premier
         -`k` : le nombre de fois qu'on lance le test
-        
+
     :return:
         False : n est un nombre composé
         True : n est probablement un nombre premier (mais n peut être composé)
-    
+
     """
-    
-    if n % 2 == 0 :
+
+    if (n % 2 == 0):
         return False
-    
+
+    if (n == 3):
+        return True
+
     d, s = n-1, 0
     while (d % 2 == 0):
         d, s = d/2, s+1
@@ -31,7 +35,7 @@ def AMR(n, k = 3) :
     def WitnessLoop():
         a = random.randint(2, n-2)
         x = pow(a, d, n)
-        if (x == 1 or x == n - 1):
+        if (x == 1 or x == n-1):
             return True
         for j in range(s-1):
             x = pow(x, 2, n)
@@ -44,29 +48,59 @@ def AMR(n, k = 3) :
     for i in range(k):
         if not WitnessLoop():
             return False
-    
-    return True #n est probablement premier
 
-def compute_prime_numbers_up_to (n): 
+    return True  # n est probablement premier
+
+
+def eratho(n):
     """
-    Écrit dans le fichier nbrpremiers.txt les n premiers nombres premiers
-    
+    Renvoie les nombres premiers plus petits que n
+
     """
-    
+
     result = []
     eratho = (n+1)*range(1)
-    for i in range(2,n+1) :
-        if eratho[i] == 0 : 
-            result.append(i)         
-            for j in range(n/i) :
-                eratho[(j+1)*i]=1
+    for i in range(2, n+1):
+        if eratho[i] == 0:
+            result.append(i)
+            for j in range(n/i):
+                eratho[(j+1)*i] = 1
 
     return result
+
+
+def segmented_eratho(l, r):
+    """
+    Renvoie les nombres premiers p tels que l <= p <= r
+
+    Voir http://programmingpraxis.com/2010/02/05/segmented-sieve-of-eratosthenes/
+
+    """
+
+    # On se ramène au cas où l et r sont impairs
+    if l % 2 == 0:
+        l += 1
+
+    if r % 2 == 0:
+        r -= 1
+
+    primes = eratho(int(math.sqrt(r)))[1:]  # on enlève 2
+    q = [(-(l+p)/2) % p for p in primes]
+    print primes
+    print q
+    table = ((r-l)/2 + 1)*[True]
+    print table
+    for i, p in enumerate(primes):
+        for j in range(q[i], ((r-l)/2 + 1), p):
+            table[j] = False
+
+    return [l+2*i for (i, b) in enumerate(table) if b]
+
 
 def diviseurs_triviaux(n):
     """
     Renvoie la liste des petits diviseurs de n
-    
+
     """
 
     nbrpremiers = compute_prime_numbers_up_to(10**6)
@@ -79,7 +113,8 @@ def diviseurs_triviaux(n):
                 g = g/p
     return result
 
-def XGCD(a,b):
+
+def XGCD(a, b):
     """
     The extended Euclidean algorithm:
     Given integers a and b, returns x, y, and g = GCD(a,b)
@@ -92,17 +127,18 @@ def XGCD(a,b):
     >>> XGCD(12388542345128376123,981723987132541230)
     (3, -23206105513321299L, 292841801346842686L)
     """
-    
+
     x, y = a, b
     u1, v1 = 1, 0
     u2, v2 = 0, 1
     while y > 0:
-        q=x/y
-        x, y = y, x%y 
-        u2, u1 = u1 - q*u2, u2 
+        q = x/y
+        x, y = y, x % y
+        u2, u1 = u1 - q*u2, u2
         v2, v1 = v1 - q*v2, v2
-    
+
     return (x, u1, v1)
+
 
 def valuation(b, p):
     """"
