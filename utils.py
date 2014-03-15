@@ -54,8 +54,10 @@ def AMR(n, k=3):
 
 def eratho(n):
     """
-    Renvoie les nombres premiers plus petits que n
+    Renvoie les nombres premiers plus petits que n.
 
+    Cette fonction stocke en mémoire une liste de taille n. Il faut donc n pas
+    trop grand (n <= 10**7). Pour n > 10**7, on utilise big_eratho.
     """
 
     result = []
@@ -73,7 +75,10 @@ def segmented_eratho(l, r):
     """
     Renvoie les nombres premiers p tels que l <= p <= r
 
-    Voir http://programmingpraxis.com/2010/02/05/segmented-sieve-of-eratosthenes/
+    http://programmingpraxis.com/2010/02/05/segmented-sieve-of-eratosthenes/
+
+    Cette fonction stocke en mémoire une liste de taille (r-l)/2.
+    Si (r-l)/2 > 10^7, on utilisera big_segmented_eratho.
 
     """
 
@@ -94,9 +99,9 @@ def segmented_eratho(l, r):
     return [l+2*i for (i, b) in enumerate(table) if b]
 
 
-def compute_prime_numbers_up_to(n):
+def big_eratho(n):
     """
-    Renvoie les nombres premiers inférieurs ou égaux à n
+    Renvoie les nombres premiers inférieurs ou égaux à n.
 
     """
 
@@ -111,6 +116,22 @@ def compute_prime_numbers_up_to(n):
         primes = segmented_eratho((i+1)*chunksize + 1, (i+2)*chunksize)
 
 
+def big_segmented_eratho(l, r):
+    """
+    Renvoie les nombres premiers inférieurs ou égaux à n.
+
+    """
+
+    chunksize = 10**7
+    nb_chunks = (r-l-1)/chunksize + 1
+    primes = segmented_eratho(l, l+chunksize)
+
+    for i in range(nb_chunks):
+        for j, p in enumerate(primes):
+            yield primes[j]
+
+        primes = segmented_eratho((i+1)*chunksize + l + 1, (i+2)*chunksize + l)
+
 
 def diviseurs_triviaux(n):
     """
@@ -118,7 +139,7 @@ def diviseurs_triviaux(n):
 
     """
 
-    nbrpremiers = compute_prime_numbers_up_to(10**6)
+    nbrpremiers = eratho(10**6)
     result = []
     for p in nbrpremiers:
         if n % p == 0:
