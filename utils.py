@@ -86,15 +86,30 @@ def segmented_eratho(l, r):
 
     primes = eratho(int(math.sqrt(r)))[1:]  # on enlève 2
     q = [(-(l+p)/2) % p for p in primes]
-    print primes
-    print q
     table = ((r-l)/2 + 1)*[True]
-    print table
     for i, p in enumerate(primes):
         for j in range(q[i], ((r-l)/2 + 1), p):
             table[j] = False
 
     return [l+2*i for (i, b) in enumerate(table) if b]
+
+
+def compute_prime_numbers_up_to(n):
+    """
+    Renvoie les nombres premiers inférieurs ou égaux à n
+
+    """
+
+    chunksize = 10**7
+    nb_chunks = (n-1)/chunksize + 1
+    primes = eratho(chunksize)
+
+    for i in range(nb_chunks):
+        for j in range(len(primes)):
+            yield primes[j]
+
+        primes = segmented_eratho((i+1)*chunksize + 1, (i+2)*chunksize)
+
 
 
 def diviseurs_triviaux(n):
