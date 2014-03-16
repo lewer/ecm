@@ -6,13 +6,13 @@ import utils
 import fractions
 
 
-def un_facteur(n, B1=10**6, k=1, phase2=True, B2=5*10**8):
+def un_facteur(n, B1=10**6, nb_essais=1, phase2=True, B2=5*10**8):
     """
     Calcule un facteur de n avec la méthode ECM.
     k est le nombre d'essais.
 
     """
-    for i in range(k):
+    for i in range(nb_essais):
         if(n % 2 == 0):
             return 2
         delta = n
@@ -76,7 +76,7 @@ def ECM_mult((x, z), k, d, n):
     return (xp, zp)
 
 
-def factorise(N, k=3):
+def factorise(N, k=3, nb_essais=1, B1=10**6, B2=10**8, phase2=True):
     """
     Factorise un entier avec la méthode un_facteur
 
@@ -94,7 +94,7 @@ def factorise(N, k=3):
         return utils.naive_factoring(N)
 
     try:
-        d = un_facteur(N)
+        d = un_facteur(N, B1, nb_essais, phase2, B2)
     except:  # Pollard_rho lance une exception s'il n'a pas pu calculer de facteur de N
         raise Exception("Impossible de factorier l'entier")
 
