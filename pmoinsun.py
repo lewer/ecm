@@ -61,31 +61,37 @@ def factorise(N, k=3, b1=10**6):
         -`k`: le nombre de fois qu'on lance AMR pour déterminer si un entier est premier
 
     :return:
-        La liste des facteurs de N
+        un couple de listes l, m, où:
+            l sont des facteurs premiers de N
+            m sont des facteurs de N que l'algorithme n'a pas su factoriser
 
     """
 
     # On factorise les entiers <= avec la méthode naïve
     if N <= 1000:
-        return utils.naive_factoring(N)
+        return utils.naive_factoring(N), []
 
     try:
         d = un_facteur(N, b1)
     except:
-        raise Exception("Impossible de factoriser l'entier")
+        return [], [N]
 
     if d == N:
-        return [d]
+        return [d], []
 
-    facteurs = []
+    facteurs, non_factorise = [], []
     if utils.AMR(d, k):
-        facteurs += [d]
+        facteurs.append(d)
     else:
-        facteurs += factorise(d)
+        a, b = factorise(d)
+        facteurs += a
+        non_factorise += b
 
     if utils.AMR(N/d, k):
-        facteurs += [N/d]
+        facteurs.append(N/d)
     else:
-        facteurs += factorise(N/d)
-        
-    return facteurs
+        a, b = factorise(N/d)
+        facteurs += a
+        non_factorise += b
+
+    return facteurs, non_factorise

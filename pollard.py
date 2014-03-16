@@ -33,36 +33,42 @@ def factorise(N, k=3):
     """
     Factorise un entier avec la méthode un_facteur
 
-    :Parame)ers:
+    :Parameters:
         -`N`: L'entier à factoriser
         -`k`: le nombre de fois qu'on lance AMR pour déterminer si un entier est premier
 
     :return:
-        La liste des facteurs de N
+        un couple de listes l, m, où:
+            l sont des facteurs premiers de N
+            m sont des facteurs de N que l'algorithme n'a pas su factoriser
 
     """
 
-    # On factorise les entiers <= 1000 avec une méthode naïve
+    # On factorise les entiers <= avec la méthode naïve
     if N <= 1000:
-        return utils.naive_factoring(N)
+        return utils.naive_factoring(N), []
 
     try:
         d = un_facteur(N)
-    except:  # Pollard_rho lance une exception s'il n'a pas pu calculer de facteur de N
-        raise Exception("Impossible de factorier l'entier")
+    except:
+        return [], [N]
 
     if d == N:
-        return [d]
+        return [d], []
 
-    facteurs = []
+    facteurs, non_factorise = [], []
     if utils.AMR(d, k):
-        facteurs += [d]
+        facteurs.append(d)
     else:
-        facteurs += factorise(d)
+        a, b = factorise(d)
+        facteurs += a
+        non_factorise += b
 
     if utils.AMR(N/d, k):
-        facteurs += [N/d]
+        facteurs.append(N/d)
     else:
-        facteurs += factorise(N/d)
+        a, b = factorise(N/d)
+        facteurs += a
+        non_factorise += b
 
-    return facteurs
+    return facteurs, non_factorise
