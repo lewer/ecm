@@ -1,0 +1,37 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=40px, left=60px, right=60px]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[normalem]{ulem}
+\usepackage{verbatim}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\title{Factorisation d'entiers}
+\author{Stéphane Horte \& Gabriel Lewertowski}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+Nous présentons trois algorithmes de factorisation d'entiers : les algorithmes \textit{$\rho$} et \textit{$(p-1)$} proposés par J.M Pollard en 1974 dans \cite{pollard_rho} ainsi que l'algorithme \textit{ECM} (Elliptic Curve Method) décrit par H. W. Lenstra, Jr dans \cite{lenstra}. Nous testons ensuite nos implémentations sur des grands nombres choisis aléatoirement, et nous comparons avec les résultats obtenus par GMP-ECM.
+\end{abstract}
+
+\begin{thebibliography}{9}
+\bibitem{pollard_rho}
+J. M. Pollard, \emph{A Monte Carlo method for factorization}, BIT, 1975, pp.331-334
+
+\bibitem{lenstra}
+H. W. Lenstra, Jr, \emph{Factoring integers with elliptic curves}, Annals of Mathematics, 1987, pp.649-673
+
+
+\end{thebibliography}
+
+\end{document}
