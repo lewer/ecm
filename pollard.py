@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
-# arith.py
-# author: Gabriel Lewertowski, Stephane Horte
-# -*- coding: utf-8 -*-
+# pollard.py
 import fractions
 import utils
 
 
 def un_facteur(N, f=lambda x, m: (x*x + 1) % m, k=3):
     """
-    Computes a non-trivial factor of the integer N
-    (presumed composite) using the Pollard rho algorithm.
-    The second argument, f, is a pseudo-random function modulo N.
+    Calcule un facteur de N avec la méthode Pollard-rho.
+
+    :Parameters:
+        - N: l'entier à factoriser
+        - f: la fonction d'itération à utiliser
+        - k: le nombre d'appels à AMR pour déterminer si un entier est premier
     """
 
     if utils.AMR(N, k):
@@ -23,8 +24,7 @@ def un_facteur(N, f=lambda x, m: (x*x + 1) % m, k=3):
         g = fractions.gcd(x - y, N)
 
     if (g == N):
-        # if the algorithm fails:
-        raise Exception("could not compute factor")
+        raise Exception("Impossible de trouver un facteur")
     else:
         return g
 

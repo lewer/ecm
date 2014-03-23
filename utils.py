@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# utils.py
 
 """Fonctions arithmétiques utilisées pour la factorisation des entiers
 
@@ -152,9 +153,9 @@ def diviseurs_triviaux(n):
 
 def XGCD(a, b):
     """
-    The extended Euclidean algorithm:
-    Given integers a and b, returns x, y, and g = GCD(a,b)
-    such that ax + by = g .
+    L'algrithme d'Euclide étendu.
+    Étant donné deux entiers a et b, calcule g = PGCD(a, b) et renvoie
+    (g, x, y) tel que ax + by = g
 
     >>> XGCD(18,33)
     (3, 2, -1)
@@ -232,6 +233,11 @@ def write_primes_up_to(n):
 
 
 def primes_from_file(l, r):
+    """
+    Renvoie les nombres premiers p tels que l <= p <= r lus depuis un fichier
+
+    """
+
     with open('nbrpremiers.txt', 'r') as f:
         p = int(f.readline())
         while p < l:

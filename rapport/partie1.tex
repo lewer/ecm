@@ -1,0 +1,100 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\begin{document}
+\chapter{Présentation des algorithmes}
+\section{Algorithme $\rho$ de Pollard}
+\subsection{Principe de fonctionnement}
+
+ 
+
+
+
+
+	Soit $N$ un entier quelconque que nous souhaitons pouvoir factoriser.
+	
+	Pour cela nous nous plaçons dans $\mathbb{Z}/N\mathbb{Z}$. C'est un ensemble fini de $N$ éléments. Soit $f$ une fonction polynomiale d'ordre au moins 2 et à coefficients dans  $\mathbb{Z}$. Par compatibilité de l'addition et de la multiplication avec la réduction modulo $N$ $f$ définie trivialement une fonction de $\mathbb{Z}/N\mathbb{Z}$ dans $\mathbb{Z}/N\mathbb{Z}$. Pour toutes fonctions polynomiales réduites modulo $N$ et $x_0$ un élément de $\mathbb{Z}/N\mathbb{Z}$ on définit la suite des itérations  $(x_i)_{i \in \mathbb{Z}}$ avec $x_i$ = $f^i(x_0)$. La suite des $(x_i)_{i \in \mathbb{Z}}$ est à valeur dans un ensemble fini. Par conséquent il existe forcément deux indices $i$,$j$ différents tels que $x_i$ = $x_j$. Soit ($i,j$) le plus petit couple (pour l'ordre lexicographique) à vérifier cette propriété. La période de la suite est donc de $j-i = \lambda$. On remarque aussi que pour tout $k$ et $l$ dans $\mathbb{Z}$ on a $x_{i+k}$ = $x_{j+k+l \times \lambda}$. Par conséquent on peut trouver des entiers $t$ tels que $x_t$ = $x_{2t}$. Le plus petit $e$ vérifiant cette propriété s'appelle l'épacte et est noté $e$. Il est démontré les résultats suivants :
+	
+\begin{equation}
+	E(\lambda) = \sqrt { \pi N \over 8 } + O(1) \approx 0.627 \sqrt N + O(1)
+\end{equation}	
+\begin{equation}
+	E(e) = \sqrt { \pi^5 N \over 288 } + O(1) \approx 1.03 \sqrt N + O(1)
+\end{equation}	
+	
+	
+	
+	Revenons en à la factorisation. Soit $p$ un facteur de $N$ encore inconnu. Si $p$ est connu alors la fonction $f$ se réduit aussi trivialement à une fonction de $\mathbb{Z}/p\mathbb{Z}$ dans $\mathbb{Z}/p\mathbb{Z}$ en prenant sa réduction modulo $p$ de sa réduction modulo $N$. Par les théorèmes énoncés précédemment nous sommes capables de trouver en un temps de l'ordre de $ \sqrt p$ un entier $l$ tel que $x_l$ = $x_{2l}$ modulo $p$. Pour un tel indice nous avons $p$ qui divise $x_l-x_{2l}$, par conséquent $p$ divise aussi le pgcd de $N$ et de $x_l-x_{2l}$. C'est dans ce résultat que réside le principe de la méthode $\rho$ de Pollard : Pour chercher un facteur de $N$ il nous suffit alors de calculer les pgcd successifs de $N$ et de $x_i-x_{2i}$.
+	
+	L'avantage de cet algorithme par rapport à un test trivial de divisibilité par tous les nombres inférieurs à $\sqrt N$ qui fonctionne en un temps de l'ordre de $ \sqrt N$ est que nous n'avons pas besoin de connaitre explicitement $p$ pour réduire la complexité temporelle à $ \sqrt p$. Cette algorithme est souvent utilisé pour essayer de trouver les petits facteurs d'un nombre.
+
+\subsection{Notre code}
+
+
+\section{La méthode P-1}
+
+\subsection{Le principe de fonctionnement}
+
+
+	Le principe de l'algorithme P-1 repose sur le théorème de Fermat :
+	
+	Si $p$ est un nombre premier et si $a$ est un entier non divisible par $p$ alors $a^{p-1}$ = 0 modulo $p$
+	
+	 Considérons encore une fois $N$ le nombre que nous cherchons à décomposer et $p$ un de ces facteurs encore inconnu. Soit $a$  un entier de {$2,...,N-2$} premier avec $N$.
+
+\subsubsection{La première phase}
+
+
+	 Soit $B_1$ une borne donnée par l'utilisateur pour la première étape. Soit $R = ppcm (1,2,...,B_1)$, autrement dit le nombre constitué de toutes les entiers premiers inférieurs à $B_1$ à leur puissance la plus grande inférieure à $B_1$. On calcule ensuite le nombre $b$ qui vaut $a^{R}$ modulo $N$ en un temps de l'ordre de $B_1$. Si $p-1$ divise $R$ alors, par le théorème de Fermat on a $p$ qui divise $b-1$, et donc le pgcd de $b-1$ et de $N$. Remarquons au passage que tous les facteurs $q$ de $N$ tels que $q-1$ divise $R$ apparaissent dans le pgcd de $b$ et de $N$. C'est donc un facteur et non forcément un facteur premier. On dit donc que la première étape a échoué si $d$ =pgcd($p$,$a^{R-1}$) vaut 1 ou $N$. Si $d = 1$ alors deux solutions s'offrent à nous, ou nous recommençons avec une borne $B_1$ plus grande ou nous passons à l'étape 2. Si $d = N$ tous les facteurs $q$ de $N$ sont tels que $q-1$ divise $R$, il faut donc recommencer avec $B_1$ plus petit. 
+	 
+	 Cette étape compte sur le fait que tous les facteurs de $p-1$ sont petits. Cette technique n'est donc clairement pas efficace si $p-1$ est, par exemple, la multiplication de deux nombres premiers de tailles équivalentes. On peut cependant remarquer que pour un $B_1$ assez grand la première étape finira toujours par rendre
+
+\subsubsection{La seconde phase}	
+
+	La seconde phase requière une autre borne $B_2$ donnée par l'utilisateur. On prend généralement $B_2>>B_1$. On suppose que $p-1$ n'a qu'un seul gros nombre premier dans sa décomposition en nombres premiers. C'est à dire $p-1 = s \cdot h $ avec $h$ qui divise $R$ de la première phase. Pour tous les $s$ nombre premier entre $B_1$ et $B_2$ on calcule $T_s$ = $b^s$ = $a^{R \cdot s}$. On calcule ensuite $d_s = pgcd(N,T_s)$ en espérant que celui ci soit non égale à 1. Comme expliqué dans la première phase, si $p-1$ divise $R \cdot s$ divise alors $p$ divise $T_s$ et $p$ divise $d_s$. Comme dans la première phase on remarque que dans le cas où $d_s > 1$ alors $d_s$ est un facteur de $N$ mais pas obligatoirement un facteur premier. La seconde phase à une complexité de l'ordre de $\log(B_2)^2$. Encore une fois, dans le cas où $p-1$ possède au moins deux grands nombres premiers dans sa décomposition, la méthode P-1, même accompagnée de la seconde phase, n'est pas très efficace.
+	
+	\subsubsection{commentaire}
+	
+	Cette méthode repose, tout comme le théorème de Fermat, sur l'ordre du groupe multiplicatif $(\mathbb{Z}/p\mathbb{Z})^*$ qui vaut $p-1$ et sur le théorème de Lagrange qui stipule que l'ordre d'un élément divise forcément l'ordre du groupe. L'idée de ce déplacer dans un groupe associé à $p$ est très intéressante. Les méthodes P+1 et ECM (Elliptic Curve Method) sont très largement inspiré de cette technique en se plaçant sur d'autres groupes, faisant ainsi d'autre hypothèse sur l'écriture des facteurs de $N$. Nous ne verrons que ECM dans ce rapport.
+
+\subsection{Notre code}
+
+\section{La méthode ECM}
+
+\subsection{Le principe de fonctionnement}
+
+	La méthode ECM propose le même raisonnement que P-1 mais en ce plaçant sur les courbes elliptiques sur $\mathbb{Z}/N\mathbb{Z}$. Bien que pour $N$ non premier les points d'une courbes elliptiques sur $\mathbb{Z}/N\mathbb{Z}$ ne forment pas un groupe car l'addition de deux points de la courbe nécessite l'inversion d'un facteur, qui peut être non inversible dans $\mathbb{Z}/N\mathbb{Z}$. Cependant, si ce facteur est non inversible c'est qu'il n'est pas premier avec $N$, dès lors un facteur de $N$ est trouvé. 
+	
+	\subsubsection{Les courbes elliptiques}
+	
+	Nous prendrons couramment l'écriture de Weierstrass pour définir les courbes elliptiques. Une courbe elliptique dans $\mathbb{Z}/N\mathbb{Z}$ est définie par la donnée de deux coefficients $A$ et $B$ tels que $4A^3+27B^2 \ne 0$. Ce sont les points $(X,Y)$ de $(\mathbb{Z}/N\mathbb{Z})^2$ qui vérifient
+\begin{equation}
+	Y^2 = X^3 + A X +b
+\end{equation}
+
+	Il est évident, pour les même raisons que pour la méthode $\rho$ qu'une courbe elliptique dans $\mathbb{Z}/N\mathbb{Z}$ définie aussi une courbe elliptique dans $\mathbb{Z}/p\mathbb{Z}$. Cette courbe elliptique définit elle bien un groupe car $p$ est premier. Ce groupe est d'ordre $p+1-t_{A,B}$ où $t_{A,B}$ dépends de $A$ et $B$ avec $|t_{A,B}| <= 2 \sqrt{p}$. La grande force de la méthode ECM est qu'il est peu probable que deux courbes elliptiques aient le même ordre. L'ordre de notre groupe varie donc à chaque itération de la méthode, les suppositions effectuées l'écriture de l'ordre du groupe que produit de petit facteurs est donc de plus en plus probable d'être vrai au moins une fois lorsque le nombre d'itérations augmente. Pour le calcule de $k \cdot (x,y) $ sur la courbe elliptique il est possible d'éviter le calcul d'inverses en utilisant l'équation homogène de la courbe :
+\begin{equation}
+	Z Y^2 = X^3 + A Z ^2 X + Z^3 b
+\end{equation}
+
+Dans ce cas il est même possible de calculer  le point  $k \cdot(x,y)$  en un temps  $O(\log_2(k))$. Si un point est écrit grâce à la forme homogénéisé $(x,y,z)$ alors c'est le $0$ de la courbe modulo $p$ si et seulement si $p$ divise $z$. C'est ce que nous serons amenés à tester.
+
+	
+\subsubsection{La première phase}
+
+	La première phase est équivalente à la première phase de la méthode P-1. Nous avons besoin d'une borne $B_1$ donnée par l'utilisateur. Nous choisissons une courbe elliptique et un point sur cette courbe. Dans la pratique il est plus facile de choisir un point $P_0 =(x_0,y_0,1)$ et un coefficient $A$ et chercher l'existence d'un $B$ telle que la courbe définit grâce à $A$ et $B$ passe par le point $P_0$. Nous posons de manière analogue $R = ppcm (1,2,..,B_1)$ puis nous calculons le point $R \cdot P_0 $ en un temps de l'ordre de $\log(R)= O(B_1)$. Si l'ordre de notre groupe défini grâce à la courbe elliptique divise $R$ alors le point $R \cdot P_0 = (x,y,z) $ est le neutre de la courbe, c'est à dire que $p$ divise $z$. Le test de fin de la première phase est dons le calcule de $d = pgcd (N,z)$. On dit que la première phase a échoué si $d = 1 $ou$ N $. Si $d = N$ On peut recommencer avec cette courbe elliptique et une borne $B_1$ plus petite ou recommencer avec une autre courbe. Si $d=1$ on peut recommencer avec la borne $B_1$ plus grand ou bien passer à la seconde phase ou changer de courbe et reprendre à la phase 1. 
+
+
+\subsubsection{La seconde phase}
+	
+Pour la seconde phase nous nous donnons une borne $B_2 >> B_1$. Nous repartons du point $Q = R \cdot P_0$ calculé durant la phase précédente. Pour tous les nombres premiers $s$ compris entre $B_1$ et $B_2$ nous remplaçons $Q$ par $ s \cdot Q$. Une fois tous les nombres premiers compris entre $B_1$ et $B_2$ passés il ne reste qu'à calculer $d = pgcd(z,N)$ ou $z$ représente la troisième coordonnée de $Q$. Si $d = 1$ il faut augmenter les bornes ou bien recommencer avec une autre courbes de façon à changer le cardinal du groupe sur lequel nous travaillons. Si $d = N$ on peut à souhait recommencer sur une autre courbe ou baisser la borne $B_2$ sur la même courbe. La seconde phase est une version allégée de la première phase. En effet, cela revient à supposer qu'il n'est plus nécessaire de prendre en compte les puissances de "petits" nombres premiers trop grandes. Par exemple, la plus grande puissance de $2$ considérée est $2^{[\log(B_1)]}$. Contrairement à la méthode P-1 le pire cas n'est pas le cas où le cardinal du groupe s'écrit avec au moins 2 "grands" nombres premiers mais le cas où u "grand" nombre premier apparait à une puissance au moins 2 dans la décomposition de l'ordre du groupe. 
+
+	
+	
+\subsection{Notre code}
+
+
+
+\end{document}

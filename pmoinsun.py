@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pmoinsun.py
 import utils
 import math
 import fractions
@@ -33,7 +34,7 @@ def un_facteur(n, b1=10**6, phase2=True, b2=5*10**8, k=3):
 
         primes = utils.primes_from_file(b1, b2)  # nombres premiers entre b1 et b2
         s1 = primes.next()
-        t = pow(b, s1, n)  # ta va itérativement contenir b^s pour tous les s premiers, b1 <= s <= b2
+        t = pow(b, s1, n)  # t va itérativement contenir b^s pour tous les s premiers, b1 <= s <= b2
         for s2 in primes:
             pgcd = fractions.gcd(t - 1, n)
             if pgcd > 1:

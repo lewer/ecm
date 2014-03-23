@@ -1,4 +1,20 @@
 \select@language {french}
-\contentsline {section}{\numberline {1}ECM, hier et aujourd'hui}{1}
-\contentsline {subsection}{\numberline {1.1}Fonctionnement de GMP-ECM}{1}
-\contentsline {subsection}{\numberline {1.2}D\IeC {\'e}tails de l'impl\IeC {\'e}mentation}{2}
+\contentsline {section}{\numberline {1}Pr\IeC {\'e}sentation des algorithmes}{2}
+\contentsline {subsection}{\numberline {1.1}Algorithme $\rho $ de Pollard}{2}
+\contentsline {subsubsection}{\numberline {1.1.1}Principe de fonctionnement}{2}
+\contentsline {subsubsection}{\numberline {1.1.2}Notre code}{2}
+\contentsline {subsection}{\numberline {1.2}La m\IeC {\'e}thode $p-1$}{3}
+\contentsline {subsubsection}{\numberline {1.2.1}Le principe de fonctionnement}{3}
+\contentsline {subsubsection}{\numberline {1.2.2}Notre code}{4}
+\contentsline {subsection}{\numberline {1.3}La m\IeC {\'e}thode \textit {ECM}}{5}
+\contentsline {subsubsection}{\numberline {1.3.1}Les courbes elliptiques}{5}
+\contentsline {subsubsection}{\numberline {1.3.2}Notre code}{6}
+\contentsline {section}{\numberline {2}\textit {ECM}, hier et aujourd'hui}{7}
+\contentsline {subsection}{\numberline {2.1}Fonctionnement de \textsf {GMP-ECM}}{8}
+\contentsline {subsection}{\numberline {2.2}D\IeC {\'e}tails de l'impl\IeC {\'e}mentation}{8}
+\contentsline {section}{\numberline {3}R\IeC {\'e}sultats exp\IeC {\'e}rimentaux}{9}
+\contentsline {subsection}{\numberline {3.1}Protocole}{9}
+\contentsline {subsection}{\numberline {3.2}R\IeC {\'e}sultats pour $B_1=10^4$}{9}
+\contentsline {section}{\numberline {4}Annexe}{9}
+\contentsline {subsection}{\numberline {4.1}AMR}{9}
+\contentsline {subsection}{\numberline {4.2}Crible d'Eratosth\IeC {\`e}ne segment\IeC {\'e}}{10}

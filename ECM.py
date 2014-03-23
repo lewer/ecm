@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# author: Gabriel Lewertowski, Stephane Horte
+# ECM.py
 
 import random
 import utils
@@ -47,6 +47,19 @@ def un_facteur(n, B1=10**6, nb_essais=1, phase2=True, B2=5*10**8):
 
 
 def ECM_mult((x, z), k, d, n):
+    """
+    Multiplication rapide sur une courbe elliptique
+
+    :Parameters:
+     -`(x, z)`: un point de la courbe
+     -`k`: un entier
+     -`d`: l'inverse de 4 mod n
+     -`n`: la caractéristique de l'anneau sur lequel la courbe est définie
+    :return:
+     - k.P
+
+     """
+
     xp = 1
     xq = x
     zp = 0
